@@ -1,6 +1,12 @@
 // Based on http://stackoverflow.com/questions/10257429/how-do-i-get-my-extension-to-block-elements-on-a-page
 
+var SPONSORED_CONTENT_PARENT_NNUMBER = 18;
+var SPONSORED_CONTENT_CLASS_TYPE = '_5paw _4dcu';
+var FACEBOOK_AD_DIV_IDS = ['pagelet_ego_pane_w', 'pagelet_ego_pane', 'pagelet_side_ads', 'fbPhotoSnowliftAdsSide'];
+
 function parent(element, repititions){
+	// Finds the nth parent of a div.
+	
 	var tempElement = element;
 	for (i = 0; i < repititions; i++) {
 		tempElement = tempElement.parentElement;
@@ -8,42 +14,47 @@ function parent(element, repititions){
 	return tempElement;
 }
 
-function remove(){
+function deleteDiv(div){
+	// Removes a div from the page
+	
+	div.parentElement.removeChild(div);
+	console.log("Advertising was hidden");
+}
+
+function removeElementByID(element){
+	// Removes an element from the page based on its id
+	
 	try {
-		var fbAds = document.getElementsByClassName('_5paw _4dcu');
+		var ad = document.getElementById(element);
+		deleteDiv(ad);
+	} catch(err) {
+		//Skip if there was an error
+	}
+}
+
+function remove(){
+	// Removing Sponsored Content
+	try {
+		// Get a list of all the sponsored content divs in the page
+		var fbAds = document.getElementsByClassName(SPONSORED_CONTENT_CLASS_TYPE);
 		for (i = 0; i < fbAds.length; i++) { 
-			var upperParent = parent(fbAds[i], 16);
-			upperParent.parentElement.removeChild(upperParent);
-			console.log("Sponsored Content was hidden");
+			// Going up to find the actual post div (16th parent)
+			var upperParent = parent(fbAds[i], SPONSORED_CONTENT_PARENT_NNUMBER);
+			// Removing post div
+			deleteDiv(upperParent);
 		}
 	} catch(err) {
 		//Skip if there is an error
 	}
 	
-	try {
-		document.getElementById('pagelet_ego_pane_w').innerHTML = '';
-	} catch(err) {
-		//Skip if "pagelet_ego_pane_w" div tag isn't on this page
-	}
-	
-	try {
-        document.getElementById('pagelet_ego_pane').innerHTML = '';
-	} catch(err) {
-		//Skip if "pagelet_ego_pane" div tag isn't on this page
-	}
-	
-	try {
-        document.getElementById('pagelet_side_ads').innerHTML = '';
-	} catch(err) {
-		//Skip if "pagelet_side_ads" div tag isn't on this page
-	}
-	
-	try {
-		document.getElementById('fbPhotoSnowliftAdsSide').innerHTML = '';
-	} catch(err) {
-		//Skip if "fbPhotoSnowliftAdsSide" div tag isn't on this page
+	// Removing all other ads
+	for (i = 0; i < FACEBOOK_AD_DIV_IDS.length; i++) {
+		removeElementByID(FACEBOOK_AD_DIV_IDS[i]);
 	}
 
+	// Running every 2 seconds so that unwanted content is still deleted after scrolling down
 	setTimeout(function(){remove();},2000);
 }
+
+// Running the remove function
 remove();
