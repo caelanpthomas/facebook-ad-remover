@@ -1,7 +1,6 @@
 // Based on http://stackoverflow.com/questions/10257429/how-do-i-get-my-extension-to-block-elements-on-a-page
 
-var SPONSORED_CONTENT_PARENT_NNUMBER = 18;
-var SPONSORED_CONTENT_CLASS_TYPE = '_5paw _4dcu';
+var SPONSORED_CONTENT_CLASS_TYPE = [['_5paw _4dcu', 18], ['uiStreamSponsoredLink', 17]];
 var FACEBOOK_AD_DIV_IDS = ['pagelet_ego_pane_w', 'pagelet_ego_pane', 'pagelet_side_ads', 'fbPhotoSnowliftAdsSide'];
 
 function parent(element, repititions){
@@ -36,12 +35,14 @@ function remove(){
 	// Removing Sponsored Content
 	try {
 		// Get a list of all the sponsored content divs in the page
-		var fbAds = document.getElementsByClassName(SPONSORED_CONTENT_CLASS_TYPE);
-		for (i = 0; i < fbAds.length; i++) { 
-			// Going up to find the actual post div (16th parent)
-			var upperParent = parent(fbAds[i], SPONSORED_CONTENT_PARENT_NNUMBER);
-			// Removing post div
-			deleteDiv(upperParent);
+		for (j = 0; j < SPONSORED_CONTENT_CLASS_TYPE.length; j++) {
+			var fbAds = document.getElementsByClassName(SPONSORED_CONTENT_CLASS_TYPE[j][0]);
+			for (i = 0; i < fbAds.length; i++) { 
+				// Going up to find the actual post div (16th parent)
+				var upperParent = parent(fbAds[i], SPONSORED_CONTENT_CLASS_TYPE[j][1]);
+				// Removing post div
+				deleteDiv(upperParent);
+			}
 		}
 	} catch(err) {
 		//Skip if there is an error
