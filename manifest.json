@@ -4,6 +4,9 @@
   "name": "Facebook Ad Remover",
   "description": "This extension removes all ads and sponsored content from a Facebook page",
   "version": "0.1",
+  "background": {
+    "scripts": ["bg.js"]
+  },
 
   "browser_action": {
     "default_icon": "icon.png"
@@ -19,6 +22,6 @@
     }
   ],
   "permissions": [
-	"webNavigation", "*://*/*", "activeTab"
+	"webNavigation", "*://*/*", "activeTab", "tabs"
   ]
 }

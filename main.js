@@ -57,5 +57,12 @@ function remove(){
 	setTimeout(function(){remove();},2000);
 }
 
+chrome.browserAction.onClicked.addListener(function(activeTab)
+{
+	console.log("Here");
+    var newURL = "https://www.facebook.com/";
+    chrome.tabs.create({ url: newURL });
+});
+
 // Running the remove function
 remove();
