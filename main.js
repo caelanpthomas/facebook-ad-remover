@@ -1,6 +1,6 @@
 // Based on http://stackoverflow.com/questions/10257429/how-do-i-get-my-extension-to-block-elements-on-a-page
 
-var SPONSORED_CONTENT_CLASS_TYPE = [['_5paw _4dcu', 18], ['uiStreamSponsoredLink', 17]];
+var SPONSORED_CONTENT_CLASS_TYPE = [['_5paw _4dcu', 18], ['uiStreamSponsoredLink', 17], ['_3e_2 _m8c', 18]];
 var FACEBOOK_AD_DIV_IDS = ['pagelet_ego_pane_w', 'pagelet_ego_pane', 'pagelet_side_ads', 'fbPhotoSnowliftAdsSide'];
 
 function parent(element, repititions){
@@ -56,13 +56,6 @@ function remove(){
 	// Running every 2 seconds so that unwanted content is still deleted after scrolling down
 	setTimeout(function(){remove();},2000);
 }
-
-chrome.browserAction.onClicked.addListener(function(activeTab)
-{
-	console.log("Here");
-    var newURL = "https://www.facebook.com/";
-    chrome.tabs.create({ url: newURL });
-});
 
 // Running the remove function
 remove();
